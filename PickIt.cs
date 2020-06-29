@@ -16,6 +16,9 @@ using System.Reflection;
 using System.Windows.Forms;
 using Input = ExileCore.Input;
 
+/*
+ */
+
 namespace PickIt
 {
     public class PickIt : BaseSettingsPlugin<PickItSettings>
