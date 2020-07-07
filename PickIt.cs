@@ -18,6 +18,7 @@ using System.Reflection;
 using System.Windows.Forms;
 using Input = ExileCore.Input;
 
+
 namespace PickIt
 {
     public class PickIt : BaseSettingsPlugin<PickItSettings>
@@ -399,6 +400,12 @@ namespace PickIt
 
                 #endregion
 
+                 #region Flasks
+
+                if (Settings.Flasks && item.Quality >= Settings.FlaskQuality.Value && item.ClassName.Contains("Flask")) return true;
+
+                #endregion
+
                 #region Uniques
 
                 if (Settings.AllUniques && item.Rarity == ItemRarity.Unique) return true;
@@ -522,9 +529,9 @@ namespace PickIt
             {
                 currentLabels = GameController.Game.IngameState.IngameUi.ItemsOnGroundLabels
                     .Where(x => x.Address != 0 &&
-                                x.ItemOnGround?.Path != null &&
+                                x.ItemOnGround?.Path != null && x.CanPickUp && 
                                 x.IsVisible && x.Label.GetClientRectCache.Center.PointInRectangle(rect) &&
-                                (x.CanPickUp || x.MaxTimeForPickUp.TotalSeconds <= 0) || x.ItemOnGround?.Path == morphPath)
+                                (x.MaxTimeForPickUp.TotalSeconds <= 0) || x.ItemOnGround?.Path == morphPath)
                     .Select(x => new CustomItem(x, GameController.Files,
                         x.ItemOnGround.DistancePlayer, _weightsRules, x.ItemOnGround?.Path == morphPath))
                     .OrderByDescending(x => x.Weight).ThenBy(x => x.Distance).ToList();
@@ -533,9 +540,9 @@ namespace PickIt
             {
                 currentLabels = GameController.Game.IngameState.IngameUi.ItemsOnGroundLabels
                     .Where(x => x.Address != 0 &&
-                                x.ItemOnGround?.Path != null &&
+                                x.ItemOnGround?.Path != null && x.CanPickUp &&
                                 x.IsVisible && x.Label.GetClientRectCache.Center.PointInRectangle(rect) &&
-                                (x.CanPickUp || x.MaxTimeForPickUp.TotalSeconds <= 0) || x.ItemOnGround?.Path == morphPath)
+                                (x.MaxTimeForPickUp.TotalSeconds <= 0) || x.ItemOnGround?.Path == morphPath)
                     .Select(x => new CustomItem(x, GameController.Files,
                         x.ItemOnGround.DistancePlayer, _weightsRules, x.ItemOnGround?.Path == morphPath))
                     .OrderBy(x => x.Distance).ToList();
